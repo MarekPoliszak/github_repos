@@ -1,10 +1,11 @@
 package com.marekpoliszak.github_repos.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
+@NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
@@ -12,4 +13,5 @@ import lombok.ToString;
 public class UserRepository {
     private String name;
     private Owner owner;
+    private ArrayList<Branch> branches;
 }
