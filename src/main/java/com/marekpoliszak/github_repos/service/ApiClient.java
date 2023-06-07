@@ -2,8 +2,8 @@ package com.marekpoliszak.github_repos.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.marekpoliszak.github_repos.exception.UserNotFoundException;
 import com.marekpoliszak.github_repos.model.Branch;
-import com.marekpoliszak.github_repos.model.Commit;
 import com.marekpoliszak.github_repos.model.UserRepository;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -30,14 +30,15 @@ public class ApiClient {
                 .build();
     }
 
-    public ArrayList<UserRepository> sendRequestForRepositoryList(HttpRequest httpRequest) throws IOException, InterruptedException {
+    public ArrayList<UserRepository> sendRequestForRepositoryList(HttpRequest httpRequest) throws IOException, InterruptedException, UserNotFoundException {
         HttpClient httpClient = HttpClient.newHttpClient();
         var response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 404) {
+            //throw new ResponseStatusException(HttpStatusCode.valueOf(response.statusCode()));
+            throw new UserNotFoundException("Hello there! I am custom exception.");
+        }
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<UserRepository>>(){}.getType();
-        if (response.statusCode() != 200) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(response.statusCode()));
-        }
         return gson.fromJson(response.body(), listType);
     }
 
@@ -46,9 +47,6 @@ public class ApiClient {
         var response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<Branch>>(){}.getType();
-        if (response.statusCode() != 200) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(response.statusCode()));
-        }
         return gson.fromJson(response.body(), listType);
     }
 }

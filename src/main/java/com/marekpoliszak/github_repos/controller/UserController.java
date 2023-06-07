@@ -1,5 +1,6 @@
 package com.marekpoliszak.github_repos.controller;
 
+import com.marekpoliszak.github_repos.exception.UserNotFoundException;
 import com.marekpoliszak.github_repos.model.User;
 import com.marekpoliszak.github_repos.model.UserRepository;
 import com.marekpoliszak.github_repos.service.UserService;
@@ -20,7 +21,7 @@ public class UserController {
     UserService service;
 
     @PostMapping
-    public ArrayList<UserRepository> getAllUserRepositories(@RequestBody User user) throws IOException, InterruptedException {
+    public ArrayList<UserRepository> getAllUserRepositories(@RequestBody User user) throws IOException, InterruptedException, UserNotFoundException {
         return service.getUserRepo(user.getUsername());
     }
 }
