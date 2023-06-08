@@ -2,6 +2,7 @@ package com.marekpoliszak.github_repos.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.marekpoliszak.github_repos.exception.NotAcceptableException;
 import com.marekpoliszak.github_repos.exception.UserNotFoundException;
 import com.marekpoliszak.github_repos.model.Branch;
 import com.marekpoliszak.github_repos.model.UserRepository;
@@ -34,8 +35,10 @@ public class ApiClient {
         HttpClient httpClient = HttpClient.newHttpClient();
         var response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 404) {
-            //throw new ResponseStatusException(HttpStatusCode.valueOf(response.statusCode()));
-            throw new UserNotFoundException("Hello there! I am custom exception.");
+            throw new UserNotFoundException("No user is found with provided username");
+        }
+        if (response.statusCode() != 200 && response.statusCode() != 404) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(response.statusCode()));
         }
         Gson gson = new Gson();
         Type listType = new TypeToken<ArrayList<UserRepository>>(){}.getType();
