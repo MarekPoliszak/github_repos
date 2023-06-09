@@ -1,6 +1,5 @@
 package com.marekpoliszak.github_repos.service;
 
-import com.marekpoliszak.github_repos.exception.NotAcceptableException;
 import com.marekpoliszak.github_repos.exception.UserNotFoundException;
 import com.marekpoliszak.github_repos.model.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -13,10 +13,4 @@ public class ExceptionHandler {
         ApiException apiException = new ApiException(404, e.getMessage());
         return new ResponseEntity<>(apiException, HttpStatus.NOT_FOUND);
     }
-
-    @org.springframework.web.bind.annotation.ExceptionHandler(value = {NotAcceptableException.class})
-    public ResponseEntity<Object> handleNotAcceptableException(NotAcceptableException e) {
-        ApiException apiException = new ApiException(406, e.getMessage());
-        return new ResponseEntity<>(apiException, HttpStatus.NOT_ACCEPTABLE);
-    }
 }

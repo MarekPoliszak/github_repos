@@ -2,7 +2,6 @@ package com.marekpoliszak.github_repos.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.marekpoliszak.github_repos.exception.NotAcceptableException;
 import com.marekpoliszak.github_repos.exception.UserNotFoundException;
 import com.marekpoliszak.github_repos.model.Branch;
 import com.marekpoliszak.github_repos.model.UserRepository;
