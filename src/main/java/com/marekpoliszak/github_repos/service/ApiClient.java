@@ -2,6 +2,8 @@ package com.marekpoliszak.github_repos.service;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.marekpoliszak.github_repos.exception.UserNotFoundException;
+import com.marekpoliszak.github_repos.model.Branch;
 import com.marekpoliszak.github_repos.model.UserRepository;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -28,14 +30,25 @@ public class ApiClient {
                 .build();
     }
 
-    public ArrayList<UserRepository> sendRequest(HttpRequest httpRequest) throws IOException, InterruptedException {
+    public ArrayList<UserRepository> sendRequestForRepositoryList(HttpRequest httpRequest) throws IOException, InterruptedException, UserNotFoundException {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        var response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 404) {
+            throw new UserNotFoundException("No user is found with provided username");
+        }
+        if (response.statusCode() != 200 && response.statusCode() != 404) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(response.statusCode()));
+        }
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<UserRepository>>(){}.getType();
+        return gson.fromJson(response.body(), listType);
+    }
+
+    public ArrayList<Branch> sendRequestForBranchList(HttpRequest httpRequest) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();
         var response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<UserRepository>>(){}.getType();
-        if (response.statusCode() != 200) {
-            throw new ResponseStatusException(HttpStatusCode.valueOf(response.statusCode()));
-        }
+        Type listType = new TypeToken<ArrayList<Branch>>(){}.getType();
         return gson.fromJson(response.body(), listType);
     }
 }
