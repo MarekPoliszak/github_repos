@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class UserService {
 
     @Autowired
-    ApiClient client;
+    private ApiClient client;
 
     private static String urlForRepositoryList(String username) {
         return "https://api.github.com/users/" + username + "/repos";

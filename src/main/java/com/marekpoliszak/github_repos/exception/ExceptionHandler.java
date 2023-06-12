@@ -2,6 +2,7 @@ package com.marekpoliszak.github_repos.exception;
 
 import com.marekpoliszak.github_repos.model.ApiException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
